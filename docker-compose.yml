@@ -1,0 +1,33 @@
+version: '3'
+services:
+        dbos:
+                image: mysql:5.7
+                volumes:
+                        - mysql_storage_new:/var/lib/mysql
+                restart: always
+                environment:
+                        MYSQL_ROOT_PASSWORD: yash
+                        MYSQL_USER: yash
+                        MYSQL_PASSWORD: yash
+                        MYSQL_DATABASE: mydb
+
+
+        wpos:
+                image: wordpress:5.1.1-php7.3-apache
+                restart: always
+                depends_on:
+                        - dbos
+                ports:
+                        - 1234:80
+                environment:
+                        WORDPRESS_DB_HOST: dbos
+                        WORDPRESS_DB_USER: yash
+                        WORDPRESS_DB_PASSWORD: yash
+                        WORDPRESS_DB_NAME: mydb
+                volumes:
+                        - wp_storage_new:/var/www/html
+
+
+volumes:
+        mysql_storage_new:
+        wp_storage_new:
